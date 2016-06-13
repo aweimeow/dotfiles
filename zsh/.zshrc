@@ -110,4 +110,5 @@ bindkey  "^[[4~"   end-of-line
 
 # script recording alias
 alias script="script -t -a 2>"
-
+alias py2="ipython"
+alias py3="ipython3"
