@@ -1,4 +1,31 @@
+" This vimrc need install junegunn/vim-plug first
+
+call plug#begin('~/.vim/plugged')
+
+" Plugin List
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+Plug 'scrooloose/nerdtree'
+
+Plug 'scrooloose/syntastic'
+
+Plug 'tpope/vim-fugitive'
+
+Plug 'bling/vim-airline'
+
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'tomasr/molokai'
+
+Plug 'altercation/vim-colors-solarized'
+
+call plug#end()
+
+" Color Scheme
+"colorscheme solarized
 colorscheme molokai
+
 set t_Co=256
 syntax on
 set nu
@@ -9,6 +36,7 @@ set expandtab
 set cc=80
 set relativenumber
 set nowrap
+set laststatus=2
 "set autoindent
 
 "Short Key for alt+<move> in insert-mode
@@ -19,6 +47,9 @@ inoremap <A-l> <C-o>l
 
 "tmux tab with vim filename
 autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+
+" If no file select, vim will start NERDTree
+autocmd vimenter * NERDTree
 
 " Rename tabs to show tab number.
 " (Based on http://stackoverflow.com/questions/5927952/whats-implementation-of-vims-default-tabline-function)
