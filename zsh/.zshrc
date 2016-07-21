@@ -112,3 +112,19 @@ bindkey  "^[[4~"   end-of-line
 alias script="script -t -a 2>"
 alias py2="ipython"
 alias py3="ipython3"
+alias c="clear"
+
+# git forward commit and backward commit
+# move to next commit
+function n() {
+    git log --reverse --pretty=%H master | grep -A 1 $(git rev-parse HEAD) | tail -n1 | xargs git checkout
+}
+# move to previous commit
+function p() {
+    git checkout HEAD^1
+}
+
+# get diff between current commit and previous commit
+alias gd="git diff HEAD^ HEAD"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
