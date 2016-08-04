@@ -3,6 +3,5 @@
 #  vim
 #
 
-echo "Copying .vim to ~/."
-cp -r ./.vim ~/.
+echo "Copying .vimrc to ~/."
 cp ./.vimrc ~/.
