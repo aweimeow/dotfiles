@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="ys"
+ZSH_THEME="agnostern"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -50,6 +50,7 @@ ZSH_THEME="ys"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
+plugins+=(k)
 
 # User configuration
 
@@ -110,8 +111,8 @@ bindkey  "^[[4~"   end-of-line
 
 # script recording alias
 alias script="script -t -a 2>"
-alias py2="ipython"
-alias py3="ipython3"
+alias python2="python"
+alias python="python3"
 alias c="clear"
 
 # git forward commit and backward commit
