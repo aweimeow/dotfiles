@@ -4,6 +4,7 @@ set -e
 LOCALDIR="$HOME/.local";
 SOURCEDIR="$LOCALDIR/src";
 BINDIR="$LOCALDIR/bin";
+SHELLCONFIG="$HOME/.bashrc";
 
 function prompt() {
     time="$(date +'%Y-%m-%d_%H-%M-%S')";
@@ -17,15 +18,27 @@ if ! [ -x "$(command -v git)" ]; then
     sudo apt install git -y;
 fi
 
-if ! [ -x "$(command -v python)" && "$(command -v pip)" ]; then
+if ! [ -x "$(command -v python)" ] || ! [ -x "$(command -v pip)" ]; then
     prompt precheck "Installing python & pip ...";
     sudo apt install python python-pip -y;
 fi
 
-if ! [ -d "$SOURCEDIR" && -d "$BINDIR" ]; then
+if ! [ -d "$SOURCEDIR" ] || ! [ -d "$BINDIR" ]; then
     prompt precheck "Creating $SOURCEDIR or $BINDIR for binary files.";
     mkdir -p $SOURCEDIR;
     mkdir -p $BINDIR;
+fi
+
+if ! [[ $(printenv | grep -E "^PATH.*$BINDIR") ]]; then
+    prompt configure "Write $BINDIR into $SHELLCONFIG";
+    echo "export PATH=$BINDIR;$PATH" >> $SHELLCONFIG;
+    #source $SHELLCONFIG;
+fi
+
+if ! [[ $(printenv | grep -E "PIPENV_VENV_IN_PROJECT") ]]; then
+    prompt configure "Write PIPENV_VENV_IN_PROJECT variable into $SHELLCONFIG";
+    echo "PIPENV_VENV_IN_PROJECT=1" >> $SHELLCONFIG;
+    #source $SHELLCONFIG;
 fi
 
 if ! [ -x "$(command -v pyenv)" ]; then

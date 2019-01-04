@@ -22,14 +22,15 @@ if [[ "$1" = "change" ]]; then
     if [[ ! -d $directory ]]; then
         mkdir -p $directory && cd $directory;
         pythonbin="$SOURCEDIR/pyenv/versions/$2/bin/python";
+        mkdir -p $SOURCEDIR/pipenv/$2 && cd $SOURCEDIR/pipenv/$2;
         pipenv --python $pythonbin;
     fi
 
     cd $SOURCEDIR/pipenv/$2/.venv/bin/;
 
     for file in "python" "pip" "bpython" "git-review" "jupyter"; do
-        rm $BINDIR/$file 2>/dev/null;
-        if [[ $file ]]; then
+        rm -f $BINDIR/$file;
+        if [ -e $file ]; then
             ln -s $(pwd)/$file $BINDIR/$file;
         fi
     done
