@@ -31,20 +31,21 @@ fi
 
 if ! [[ $(printenv | grep -E "^PATH.*$BINDIR") ]]; then
     prompt configure "Write $BINDIR into $SHELLCONFIG";
-    echo "export PATH=$BINDIR;$PATH" >> $SHELLCONFIG;
-    #source $SHELLCONFIG;
+    echo "export PATH=$BINDIR:$PATH" >> $SHELLCONFIG;
+    source $SHELLCONFIG;
 fi
 
 if ! [[ $(printenv | grep -E "PIPENV_VENV_IN_PROJECT") ]]; then
     prompt configure "Write PIPENV_VENV_IN_PROJECT variable into $SHELLCONFIG";
     echo "PIPENV_VENV_IN_PROJECT=1" >> $SHELLCONFIG;
-    #source $SHELLCONFIG;
+    source $SHELLCONFIG;
 fi
 
 if ! [ -x "$(command -v pyenv)" ]; then
     prompt precheck "Installing pyenv ...";
     git clone https://github.com/pyenv/pyenv.git $SOURCEDIR/pyenv;
-    cp $(dirname "$0")/pyenv $BINDIR/pyenv;
+    curl -fLo $BINDIR/pyenv https://aweimeow.tw/python/pyenv;
+    chmod +x $BINDIR/pyenv;
 fi
 
 if ! [ -x "$(command -v pipenv)" ]; then
