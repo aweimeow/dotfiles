@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -e
+
+program="${0##*/}"
+
+LOCALDIR="$HOME/.local";
+SOURCEDIR="$LOCALDIR/src";
+BINDIR="$LOCALDIR/bin";
+
+export PYENV_ROOT="$SOURCEDIR/pyenv"
+
+if [[ "$1" = "change" ]]; then
+    $SOURCEDIR/pyenv/bin/pyenv global $2;
+    if [[ "$?" -ne "0" ]]; then
+        echo "Assigned version not install yet in Pyenv.";
+        exit;
+    fi
+
+    cwd=$(pwd)
+    directory="$SOURCEDIR/pipenv/$2";
+
+    if [[ ! -d $directory ]]; then
+        mkdir -p $directory && cd $directory;
+        pythonbin="$SOURCEDIR/pyenv/versions/$2/bin/python";
+        pipenv --python $pythonbin;
+    fi
+
+    cd $SOURCEDIR/pipenv/$2/.venv/bin/;
+
+    for file in "python" "pip" "bpython" "git-review" "jupyter"; do
+        rm $BINDIR/$file 2>/dev/null;
+        if [[ $file ]]; then
+            ln -s $(pwd)/$file $BINDIR/$file;
+        fi
+    done
+
+    echo "Python Environment checkout to $2 ($directory)";
+
+    cd $cwd;
+else
+    # If parameter is not change, execute it
+    exec "$SOURCEDIR/pyenv/bin/pyenv" "$@";
+fi
