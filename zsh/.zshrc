@@ -1,131 +1,53 @@
-# Path to your oh-my-zsh installation.
+# aweimeow.zshrc Configuration
+
+# System Path
+export PATH=$HOME/.local/bin/python_bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin
+export TERM="xterm-256color"
+export LANG="C.UTF-8"
+export LC_CTYPE="C.UTF-8"
+export HIST_STAMPS="yyyy-mm-dd"
+
+# ZSH configuration
 export ZSH=$HOME/.oh-my-zsh
+export ZSH_THEME="aweimeow"
+export ZSH_DISABLE_COMPFIX="true"
+export DISABLE_AUTO_UPDATE="true"
+export DISABLE_AUTO_TITLE="true"
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
- HIST_STAMPS="yyyy-mm-dd"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-plugins+=(k)
-
-# User configuration
-
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
-
+plugins=(zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# iTerm2 Shortcut
+function title() {
+    echo -e "\033];$*\007\a"sss
+}
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# FZF configuration
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+export FZF_DEFAULT_OPTS="--color fg:188,bg:0,hl:228,fg+:214,bg+:235,hl+:202,info:241,prompt:196,spinner:253,pointer:196,marker:82"
+export FZF_CTRL_R_OPTS='--sort --exact'
+source $HOME/.local/config/fzf/*
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+alias cat="ccat"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# Development Environment
 
-# Fix color in tmux vim
-export TERM="xterm-256color"
-DISABLE_AUTO_TITLE=true
-
-case $TERM in
-    screen*)
-        precmd(){
-            # Restore tmux-title to 'zsh'
-            printf "\033kzsh\033\\"
-            # Restore urxvt-title to 'zsh'
-            print -Pn "\e]2;zsh:%~\a"
-        }
-        preexec(){
-            # set tmux-title to running program
-            printf "\033k$(echo "$1" | cut -d" " -f1)\033\\"
-            # set urxvt-title to running program
-            print -Pn "\e]2;zsh:$(echo "$1" | cut -d" " -f1)\a"
-                }
-                ;;
-esac
+# Python / PIP related setting
+export PIP_REQUIRE_VIRTUALENV=true
 
 # Fix zsh home & end key working
 bindkey  "^[[1~"   beginning-of-line
 bindkey  "^[[4~"   end-of-line
 
-# script recording alias
-alias script="script -t -a 2>"
-alias python2="python"
-alias python="python3"
-alias c="clear"
+echo -e "\033]6;1;bg;red;brightness;40\a" > /dev/null
+echo -e "\033]6;1;bg;green;brightness;44\a" > /dev/null
+echo -e "\033]6;1;bg;blue;brightness;52\a" > /dev/null
 
-# git forward commit and backward commit
-# move to next commit
-function n() {
-    git log --reverse --pretty=%H master | grep -A 1 $(git rev-parse HEAD) | tail -n1 | xargs git checkout
+function watch() {
+    while :;
+    do
+    clear
+    $*
+    sleep 5
+    done
 }
-# move to previous commit
-function p() {
-    git checkout HEAD^1
-}
-
-# get diff between current commit and previous commit
-alias gd="git diff HEAD^ HEAD"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -1,0 +1,7 @@
+[submodule "tmux/tmux-powerline"]
+	path = tmux/tmux-powerline
+	url = https://github.com/aweimeow/tmux-powerline.git
+	branch = mydotfile
+[submodule "zsh/ohmyzsh"]
+	path = zsh/ohmyzsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git
